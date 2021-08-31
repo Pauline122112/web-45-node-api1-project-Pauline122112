@@ -49,8 +49,21 @@ server.get("/api/users", (req, res) => {
 
 //| GET    | /api/users/:id 
 server.get("/api/users/:id", (req, res) => {
+    console.log('this is the id', req.params.id)
+    User.findById(req.params.id)
+    .then(user => {
+        console.log(user)
+        if (user) {
+            res.status(200).json(user)
 
-	res.json("Returns the user object with the specified `id`.");
+        } else {
+            console.log('this is right')
+            res.status(404).json({ message: 'not found'})
+        }
+    })
+
+
+	// res.json("Returns the user object with the specified `id`.");
 });
 
 
