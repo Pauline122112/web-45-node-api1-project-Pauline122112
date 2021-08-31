@@ -1,6 +1,7 @@
 // BUILD YOUR SERVER HERE
 //import 
 const express = require("express");
+const User = require('./users/model')
 //instance of express app
 const server = express();
 //global middleware-boilerplate// teaches expr3ess to read JSON
@@ -13,13 +14,29 @@ server.get('/', (req, res) => {
 
 //| POST   | /api/users 
 server.post('/api/users', (req, res) => {
-    res.json(
-			"creates a user using the information sent inside the `request body`."
-		);
+    const user = req.body
+    if (!user.name || !user.bio) {
+        res.status(422).json({
+            message: 'name and bio required'
+        })
+    } else {
+        User.insert(user)
+        .then(stuff => {
+
+        })
+        .catch(err => {
+            res.status(500).json({
+                message: 'error getting users',
+                err: err.message,
+                stack: err.stack,
+            })
+        })
+    }
 })
 
 // | GET    | /api/users 
 server.get("/api/users", (req, res) => {
+
 	res.json("Returns an array users.");
 });
 
