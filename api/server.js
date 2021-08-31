@@ -91,10 +91,20 @@ server.delete("/api/users/:id", (req, res) => {
 
 //| PUT    | /api/users/:id
 
-server.put("/api/users/:id", (req, res) => {
-	res.json(
-		"Updates the user with the specified `id` using data from the `request body`. Returns the modified user"
-	);
+server.put("/api/users/:id", async (req, res) => {
+    const { id } = req.params
+    const changes = req.body
+    try {
+        const result = await User.update(id, changes)
+        res.status(200).json(result)      
+    } catch (err) {
+        console.log(err)
+        res.status(500).json({ message: err.message})
+    }
+
+	// res.json(
+	// 	"Updates the user with the specified `id` using data from the `request body`. Returns the modified user"
+	// );
 });
 
 module.exports = server; // EXPORT YOUR SERVER instead of {}
