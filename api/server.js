@@ -36,12 +36,20 @@ server.post('/api/users', (req, res) => {
 
 // | GET    | /api/users 
 server.get("/api/users", (req, res) => {
-
-	res.json("Returns an array users.");
+    User.find()
+    .then(users => {
+        res.status(200).json(users)
+    })
+    .catch(err => {
+        console.log(err)
+        res.status(500).json({message: err.message})
+    })
+	// res.json("Returns an array users.");
 });
 
 //| GET    | /api/users/:id 
 server.get("/api/users/:id", (req, res) => {
+
 	res.json("Returns the user object with the specified `id`.");
 });
 
