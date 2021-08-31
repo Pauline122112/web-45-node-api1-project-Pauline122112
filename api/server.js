@@ -69,9 +69,23 @@ server.get("/api/users/:id", (req, res) => {
 
 //| DELETE | /api/users/:id
 server.delete("/api/users/:id", (req, res) => {
-	res.json(
-		"Removes the user with the specified `id` and returns the deleted user."
-	);
+    User.remove(req.params.id)
+    .then(user => {
+        if (user) {
+            res.status(200).json(user)
+        } else {
+            res.status(404).json({
+							message: `user ${req.params.id} not real!!!`,
+						});
+        }
+    })
+    .catch(err => {
+        console.log(err)
+        res.status(500).json({ message: err.message })
+    })
+	// res.json(
+	// 	"Removes the user with the specified `id` and returns the deleted user."
+	// );
 });
 
 
